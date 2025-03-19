@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download a PYTHON cheat</title>
+    <style>
+        body {
+            background: url('background.jpg') no-repeat center center/cover;
+            color: #c9d1d9;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+            overflow: hidden;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .download-container {
+            text-align: center;
+            background: rgba(22, 27, 34, 0.6);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        .download-btn {
+            background: linear-gradient(135deg, #4CAF50, #2E8B57);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        .download-btn:hover {
+            background: linear-gradient(135deg, #2E8B57, #4CAF50);
+            transform: scale(1.05);
+        }
+        .nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .nav a {
+            color: #c9d1d9;
+            text-decoration: none;
+            font-size: 14px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+        .nav a:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+        .pere-nasque {
+            position: absolute;
+            bottom: 20px;
+            text-align: center;
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+        body.scrolled .pere-nasque {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="safe.html">It Safe?</a>
+    </div>
+    <div class="download-container">
+        <h2>Download</h2>
+        <p>Press button download, to download cheat.</p>
+        <button class="download-btn" onclick="downloadFile()">Скачать</button>
+    </div>
+    <div class="pere-nasque">PereNasque</div>
+    
+    <script>
+        function downloadFile() {
+            const link = document.createElement('a');
+            link.href = 'PepeNasque.zip';
+            link.download = 'PepeNasque.zip';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        window.addEventListener('scroll', () => {
+            document.body.classList.add('scrolled');
+        });
+    </script>
+</body>
+</html>
