@@ -62,7 +62,7 @@
         .nav a:hover {
             background: rgba(0, 0, 0, 0.8);
         }
-        .pere-nasque {
+        .pepe-nasque {
             position: absolute;
             bottom: 20px;
             text-align: center;
@@ -70,7 +70,7 @@
             opacity: 0;
             transition: opacity 1s;
         }
-        body.scrolled .pere-nasque {
+        body.scrolled .pepe-nasque {
             opacity: 1;
         }
     </style>
@@ -82,15 +82,15 @@
     <div class="download-container">
         <h2>Download</h2>
         <p>Press button download, to download cheat.</p>
-        <button class="download-btn" onclick="downloadFile()">Скачать</button>
+        <button class="download-btn" onclick="downloadFile()">Download</button>
     </div>
-    <div class="pere-nasque">PereNasque</div>
+    <div class="pepe-nasque">PepeNasque</div>
     
     <script>
         function downloadFile() {
             const link = document.createElement('a');
-            link.href = 'PepeNasque.zip';
-            link.download = 'PepeNasque.zip';
+            link.href = 'PepeNasque.rar';
+            link.download = 'PepeNasque.rar';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
