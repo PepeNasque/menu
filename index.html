@@ -1,125 +1,821 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download a PYTHON cheat</title>
-    <style>
-        body {
-            background: url('background.jpg') no-repeat center center/cover;
-            color: #c9d1d9;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            flex-direction: column;
-            opacity: 0;
-            animation: fadeIn 1s forwards;
-            overflow: hidden;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .download-container {
-            text-align: center;
-            background: rgba(22, 27, 34, 0.6);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-        }
-        .download-btn {
-            background: linear-gradient(135deg, #4CAF50, #2E8B57);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-        .download-btn:hover {
-            background: linear-gradient(135deg, #2E8B57, #4CAF50);
-            transform: scale(1.05);
-        }
-        .nav {
-            position: ;
-            top: 20px;
-            right: 20px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PepeNasque - Best ESP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Base styles with dark theme */
+    :root {
+      --background: #0f1117;
+      --foreground: #e2e8f0;
+      --primary: #3d66f5;
+      --primary-hover: #2a50d9;
+      --telegram: #0088cc;
+      --telegram-hover: #0072ab;
+      --secondary: #1a1f2c;
+      --border: rgba(255, 255, 255, 0.1);
+      --card: #181c28;
+      --muted: #a1a7b9;
+      --radius: 0.85rem;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
 
-.telegram-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #0088cc;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-.telegram-button:hover {
-    background-color: #0077b5;
-}
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--background);
+      color: var(--foreground);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
 
-        .nav a {
-            color: #c9d1d9;
-            text-decoration: none;
-            font-size: 14px;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 8px 16px;
-            border-radius: 6px;
-            transition: background 0.3s;
-        }
-        .nav a:hover {
-            background: rgba(0, 0, 0, 0.8);
-        }
-        .pepe-nasque {
-            position: absolute;
-            bottom: 20px;
-            text-align: center;
-            font-size: 24px;
-            opacity: 0;
-            transition: opacity 1s;
-        }
-        body.scrolled .pepe-nasque {
-            opacity: 1;
-        }
-    </style>
+    /* Animations */
+    @keyframes fade-up {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes gradient-animation {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* Glass effect for dark mode */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .glass-card:hover {
+      transform: scale(1.02);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Header / Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      padding: 16px 24px;
+      transition: all 0.3s ease-in-out;
+      background: rgba(15, 17, 23, 0.5);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .navbar-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(to right, var(--primary), #6b8aff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .nav-link {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--foreground);
+      opacity: 0.9;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .nav-link:hover {
+      opacity: 1;
+    }
+
+    /* Hero section */
+    .hero {
+      min-height: 100vh;
+      padding: 120px 24px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .background-blur {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -10;
+      overflow: hidden;
+    }
+
+    .background-blur::before {
+      content: "";
+      position: absolute;
+      top: 10%;
+      left: 15%;
+      width: 300px;
+      height: 300px;
+      background: rgba(61, 102, 245, 0.1);
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: float 6s infinite ease-in-out;
+    }
+
+    .background-blur::after {
+      content: "";
+      position: absolute;
+      bottom: 20%;
+      right: 10%;
+      width: 350px;
+      height: 350px;
+      background: rgba(61, 102, 245, 0.1);
+      border-radius: 50%;
+      filter: blur(100px);
+      animation: float 6s infinite ease-in-out;
+      animation-delay: -3s;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      text-align: center;
+      margin: 0 auto 64px;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      background-color: rgba(61, 102, 245, 0.2);
+      color: var(--primary);
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 24px;
+      background: linear-gradient(to right, var(--foreground), rgba(226, 232, 240, 0.7));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: rgba(226, 232, 240, 0.7);
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 64px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 500;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .download-button {
+      background-color: var(--primary);
+      color: white;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .download-button::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to right, var(--primary), var(--primary));
+      z-index: -1;
+      transition: transform 0.3s ease-out;
+    }
+
+    .download-button::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to right, #2a50d9, #4657b9);
+      z-index: -1;
+      transition: transform 0.3s ease-out;
+      transform: translateY(100%);
+    }
+
+    .download-button:hover::before {
+      transform: translateY(-100%);
+    }
+
+    .download-button:hover::after {
+      transform: translateY(0);
+    }
+
+    .telegram-button {
+      background-color: var(--telegram);
+      color: white;
+    }
+
+    .telegram-button:hover {
+      background-color: var(--telegram-hover);
+    }
+
+    /* Feature cards */
+    .feature-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .icon-circle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: rgba(61, 102, 245, 0.2);
+      color: var(--primary);
+      margin-bottom: 16px;
+    }
+
+    .glass-card h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .glass-card p {
+      color: rgba(226, 232, 240, 0.7);
+      font-size: 14px;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: var(--secondary);
+      padding: 48px 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 48px;
+    }
+
+    .footer-logo {
+      font-size: 20px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .footer-tagline {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .footer-link {
+      font-size: 14px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--foreground);
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .copyright {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Safe page specific styles */
+    .safe-hero {
+      padding-top: 140px;
+      padding-bottom: 80px;
+    }
+
+    .safe-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .icon-large {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background-color: rgba(61, 102, 245, 0.2);
+      color: var(--primary);
+      margin: 0 auto 24px;
+    }
+
+    .safe-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin: 48px 0;
+    }
+
+    .safe-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .safe-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-top: 4px;
+    }
+
+    .icon-green {
+      background-color: rgba(34, 197, 94, 0.2);
+      color: rgb(72, 199, 116);
+    }
+
+    .icon-amber {
+      background-color: rgba(245, 158, 11, 0.2);
+      color: rgb(245, 176, 66);
+    }
+
+    .safe-card-content h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .safe-card-content p {
+      color: rgba(226, 232, 240, 0.7);
+    }
+
+    .safe-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 48px;
+    }
+
+    /* Button outline variant */
+    .button-outline {
+      background-color: transparent;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .button-outline:hover {
+      background-color: var(--secondary);
+    }
+
+    /* Page visibility */
+    .page {
+      display: none;
+    }
+
+    .active-page {
+      display: block;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .navbar-container, .footer-container {
+        flex-direction: column;
+        gap: 16px;
+      }
+      
+      .footer-container {
+        text-align: center;
+      }
+      
+      .footer-links {
+        justify-content: center;
+        margin-top: 24px;
+      }
+      
+      .feature-cards {
+        grid-template-columns: 1fr;
+      }
+      
+      .safe-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="nav">
-        <a href="safe.html">It Safe?</a>
+  <header class="navbar">
+    <div class="navbar-container">
+      <a href="#home" class="logo" onclick="showPage('home')">
+        <span class="gradient-text">PepeNasque</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#home" class="nav-link" onclick="showPage('home')">Home</a>
+        <a href="#safe" class="nav-link" onclick="showPage('safe')">Is it safe?</a>
+        <a href="https://t.me/whforcs2" target="_blank" class="button telegram-button">Telegram</a>
+      </nav>
     </div>
-    <div class="download-container">
-        <h2>Download</h2>
-        <p>Press button download, to download cheat.</p>
-        <button class="download-btn" onclick="downloadFile()">Download</button>
-    </div>
+  </header>
 
-    <div class="nav">
-        <a href="https://t.me/whforcs2" class="telegram-button">Telegram</a>
-    </div>
-
-    
-    <div class="pepe-nasque">PepeNasque</div>
-    
-    <script>
-        function downloadFile() {
-            const link = document.createElement('a');
-            link.href = 'PepeNasque.rar';
-            link.download = 'PepeNasque.rar';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+  <main>
+    <!-- Home Page -->
+    <section id="home-page" class="page active-page">
+      <div class="hero">
+        <div class="background-blur"></div>
         
-        window.addEventListener('scroll', () => {
-            document.body.classList.add('scrolled');
+        <div class="hero-content">
+          <span class="badge">PepeNasque v0.2</span>
+          <h1>ESP for Counter-Strike 2!</h1>
+          <p>Undetected cheat for Counter Strike 2. 'dont play at main account'</p>
+          
+          <div class="hero-buttons">
+<a href="PepeNasque.rar" class="button download-button" download>
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+    <polyline points="7 10 12 15 17 10"></polyline>
+    <line x1="12" y1="15" x2="12" y2="3"></line>
+  </svg>
+  Download Now
+</a>
+
+            <a href="https://t.me/whforcs2" target="_blank" class="button telegram-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg>
+              Join Telegram
+            </a>
+          </div>
+        </div>
+        
+        <div class="feature-cards">
+          <div class="glass-card">
+            <div class="card-content">
+              <div class="icon-circle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              </div>
+              <h3>Instant Access</h3>
+              <p>Download and enjoy the benefits immediately without complicated setup</p>
+            </div>
+          </div>
+          
+          <div class="glass-card">
+            <div class="card-content">
+              <div class="icon-circle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              </div>
+              <h3>Secure Technology</h3>
+              <p>Our software is designed with your security and privacy in mind</p>
+            </div>
+          </div>
+          
+          <div class="glass-card">
+            <div class="card-content">
+              <div class="icon-circle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg>
+              </div>
+              <h3>Community Support</h3>
+              <p>Join our Telegram community for updates and exclusive content</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Safe Page -->
+    <section id="safe-page" class="page">
+      <div class="hero safe-hero">
+        <div class="background-blur"></div>
+        
+        <div class="safe-content">
+          <div class="icon-large">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          </div>
+          
+          <div style="text-align: center; margin-bottom: 48px;">
+            <h1>Is PepeNasque Safe?</h1>
+            <p>We understand your concerns about security. Here's everything you need to know.</p>
+          </div>
+          
+          <div class="safe-cards">
+            <div class="safe-card">
+              <div class="safe-icon icon-green">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              </div>
+              <div class="safe-card-content">
+                <h2>100% Clean Code</h2>
+                <p>Our software is developed with the highest standards of code quality. Every release is thoroughly tested to ensure it's free from malicious components.</p>
+              </div>
+            </div>
+            
+            <div class="safe-card">
+              <div class="safe-icon icon-green">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              </div>
+              <div class="safe-card-content">
+                <h2>Privacy Focused</h2>
+                <p>We do not collect any personal data or track your usage. Your privacy is our priority, and our software operates entirely on your device without sending data to external servers.</p>
+              </div>
+            </div>
+            
+            <div class="safe-card">
+              <div class="safe-icon icon-green">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              </div>
+              <div class="safe-card-content">
+                <h2>Regular Updates</h2>
+                <p>We continuously improve our software with regular updates. These updates include security enhancements to ensure you're always protected against potential vulnerabilities.</p>
+              </div>
+            </div>
+            
+            <div class="safe-card">
+              <div class="safe-icon icon-amber">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              </div>
+              <div class="safe-card-content">
+                <h2>Important Notice</h2>
+                <p>=Yes, we are safe. Virustotal can detect a file as a virus, but it is not a virus. Most likely this happens because of injection into the game...</p>
+              </div>
+            </div>
+          </div>
+          
+                     <a href="#home" onclick="showPage('home')" class="button button-outline">
+              Back to Home
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <a href="#home" onclick="showPage('home')" class="footer-logo">
+          <span class="gradient-text">PepeNasque</span>
+        </a>
+        <p class="footer-tagline">Elevating your experience</p>
+      </div>
+      
+      <div class="footer-links">
+        <a href="#home" onclick="showPage('home')" class="footer-link">Home</a>
+        <a href="#safe" onclick="showPage('safe')" class="footer-link">Safety Information</a>
+        <a href="https://t.me/whforcs2" target="_blank" class="footer-link">Telegram Channel</a>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p class="copyright">© <span id="current-year"></span> PepeNasque. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- The download file content -->
+  <div style="display: none;" id="download-file-content">
+    Premium Suite v1.0
+
+    Thank you for downloading PepeNasque!
+
+    This is a placeholder text file. In a real application, this would be your actual software.
+
+    Visit our Telegram channel for updates and community support: https://t.me/whforcs2
+
+    Instructions:
+    1. Extract the contents of this file
+    2. Run the main application
+    3. Follow the on-screen instructions to complete setup
+
+    Enjoy using PepeNasque!
+  </div>
+
+  <script>
+    // Set current year in footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // Function to handle page switching
+    function showPage(pageName) {
+      // Hide all pages
+      const pages = document.querySelectorAll('.page');
+      pages.forEach(page => {
+        page.classList.remove('active-page');
+      });
+      
+      // Show selected page
+      const activePage = document.getElementById(pageName + '-page');
+      if (activePage) {
+        activePage.classList.add('active-page');
+      }
+      
+      // Scroll to top
+      window.scrollTo(0, 0);
+      
+      // Update URL hash without scrolling
+      history.pushState(null, null, '#' + pageName);
+      
+      return false;
+    }
+
+    // Handle URL hash on load
+    window.addEventListener('load', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash === 'safe') {
+        showPage('safe');
+      } else {
+        showPage('home');
+      }
+    });
+
+    // Scroll animation for navbar
+    window.addEventListener('scroll', () => {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 10) {
+        navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.2)';
+        navbar.style.background = 'rgba(15, 17, 23, 0.8)';
+      } else {
+        navbar.style.boxShadow = 'none';
+        navbar.style.background = 'rgba(15, 17, 23, 0.5)';
+      }
+    });
+
+    // Create and download PepeNasque.rar file
+    function setupDownloadButtons() {
+      const downloadButtons = document.querySelectorAll('#download-button, #safe-download-button');
+      
+      downloadButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+          // Create a dummy blob for demonstration
+          const content = document.getElementById('download-file-content').innerText;
+          const blob = new Blob([content], { type: 'application/octet-stream' });
+          
+          // Create download link
+          const downloadLink = document.createElement('a');
+          downloadLink.href = URL.createObjectURL(blob);
+          downloadLink.download = "PepeNasque.rar"; // Set the file name to PepeNasque.rar
+          
+          // Trigger download
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          document.body.removeChild(downloadLink);
         });
-    </script>
+      });
+    }
+    
+    // Set up download buttons
+    setupDownloadButtons();
+
+    // Add animation for page load
+    document.addEventListener('DOMContentLoaded', () => {
+      // Animate hero content
+      setTimeout(() => {
+        const heroContent = document.querySelector('.hero-content');
+        heroContent.style.opacity = '1';
+        heroContent.style.transform = 'translateY(0)';
+      }, 100);
+      
+      // Animate feature cards
+      setTimeout(() => {
+        const featureCards = document.querySelector('.feature-cards');
+        featureCards.style.opacity = '1';
+        featureCards.style.transform = 'translateY(0)';
+      }, 500);
+      
+      // Create interactive background effect on mousemove
+      const hero = document.querySelector('.hero');
+      
+      hero.addEventListener('mousemove', (e) => {
+        const { left, top, width, height } = hero.getBoundingClientRect();
+        const x = (e.clientX - left) / width;
+        const y = (e.clientY - top) / height;
+        
+        hero.style.setProperty('--mouse-x', x);
+        hero.style.setProperty('--mouse-y', y);
+        
+        const moveX = (x - 0.5) * 20;
+        const moveY = (y - 0.5) * 20;
+        
+        const blur = document.querySelector('.background-blur');
+        blur.style.backgroundImage = `radial-gradient(circle at calc(50% + ${moveX}px) calc(50% + ${moveY}px), rgba(61, 102, 245, 0.2), transparent 60%)`;
+      });
+    });
+  </script>
+  <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
 </body>
 </html>
+
