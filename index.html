@@ -299,6 +299,15 @@
       background-color: var(--telegram-hover);
     }
 
+    /* Download counter */
+    .download-counter {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 8px;
+      text-align: center;
+      width: 100%;
+    }
+
     /* Feature cards */
     .feature-cards {
       display: grid;
@@ -543,9 +552,9 @@
         <div class="background-blur"></div>
         
         <div class="hero-content">
-          <span class="badge">PepeNasque v0.3</span>
-          <h1>ESP for Counter-Strike 2!</h1>
-          <p>Undetected cheat for Counter Strike 2. 'dont play at main account'</p>
+          <span class="badge">PepeNasque v0.4</span>
+          <h1>PepeNasque</h1>
+          <p>Undetected cheat for Counter Strike 2. "dont play at main account"</p>
           
           <div class="hero-buttons">
 <a href="PepeNasque.rar" class="button download-button" download>
@@ -556,7 +565,8 @@
   </svg>
   Download Now
 </a>
-
+            <div class="download-counter" id="downloadCounter">Скачано 0 раз</div>
+            
             <a href="https://t.me/whforcs2" target="_blank" class="button telegram-button">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg>
               Join Telegram
@@ -650,12 +660,23 @@
               </div>
               <div class="safe-card-content">
                 <h2>Important Notice</h2>
-                <p>=Yes, we are safe. Virustotal can detect a file as a virus, but it is not a virus. Most likely this happens because of injection into the game...</p>
+                <p>Yes, we are safe. Virustotal can detect a file as a virus, but it is not a virus. Most likely this happens because of injection into the game...</p>
               </div>
             </div>
           </div>
           
-                     <a href="#home" onclick="showPage('home')" class="button button-outline">
+          <div class="safe-buttons">
+            <a href="PepeNasque.rar" class="button download-button" download>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              Download Now
+            </a>
+            <div class="download-counter">Скачано <span id="safeDownloadCounter">0</span> раз</div>
+            
+            <a href="#home" onclick="showPage('home')" class="button button-outline">
               Back to Home
             </a>
           </div>
@@ -685,27 +706,14 @@
     </div>
   </footer>
 
-  <!-- The download file content -->
-  <div style="display: none;" id="download-file-content">
-    Premium Suite v1.0
-
-    Thank you for downloading PepeNasque!
-
-    This is a placeholder text file. In a real application, this would be your actual software.
-
-    Visit our Telegram channel for updates and community support: https://t.me/whforcs2
-
-    Instructions:
-    1. Extract the contents of this file
-    2. Run the main application
-    3. Follow the on-screen instructions to complete setup
-
-    Enjoy using PepeNasque!
-  </div>
-
   <script>
     // Set current year in footer
     document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // Initialize download counter
+    let downloadCount = localStorage.getItem('downloadCount') || 0;
+    document.getElementById('downloadCounter').textContent = `Скачано ${downloadCount} раз`;
+    document.getElementById('safeDownloadCounter').textContent = downloadCount;
 
     // Function to handle page switching
     function showPage(pageName) {
@@ -752,23 +760,32 @@
       }
     });
 
-    // Create and download PepeNasque.rar file
+    // Setup download buttons to track downloads
     function setupDownloadButtons() {
-      const downloadButtons = document.querySelectorAll('#download-button, #safe-download-button');
+      const downloadButtons = document.querySelectorAll('.download-button');
       
       downloadButtons.forEach(button => {
         button.addEventListener('click', function(e) {
+          // Prevent default action (we'll handle it ourselves)
           e.preventDefault();
-          // Create a dummy blob for demonstration
-          const content = document.getElementById('download-file-content').innerText;
-          const blob = new Blob([content], { type: 'application/octet-stream' });
           
-          // Create download link
+          // Increase counter
+          downloadCount++;
+          localStorage.setItem('downloadCount', downloadCount);
+          
+          // Update counters on both pages
+          document.getElementById('downloadCounter').textContent = `Скачано ${downloadCount} раз`;
+          document.getElementById('safeDownloadCounter').textContent = downloadCount;
+          
+          // Get the file URL from the href attribute
+          const fileUrl = this.getAttribute('href');
+          
+          // Create a temporary link to trigger the download
           const downloadLink = document.createElement('a');
-          downloadLink.href = URL.createObjectURL(blob);
-          downloadLink.download = "PepeNasque.rar"; // Set the file name to PepeNasque.rar
+          downloadLink.href = fileUrl;
+          downloadLink.download = fileUrl.split('/').pop(); // Use the filename from URL
           
-          // Trigger download
+          // Trigger the download
           document.body.appendChild(downloadLink);
           downloadLink.click();
           document.body.removeChild(downloadLink);
@@ -818,4 +835,3 @@
   <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
 </body>
 </html>
-  
