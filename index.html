@@ -709,10 +709,6 @@
     // Set current year in footer
     document.getElementById('current-year').textContent = new Date().getFullYear();
 
-    // Initialize download counter
-    let downloadCount = localStorage.getItem('downloadCount') || 0;
-    document.getElementById('downloadCounter').textContent = `Скачано ${downloadCount} раз`;
-    document.getElementById('safeDownloadCounter').textContent = downloadCount;
 
     // Function to handle page switching
     function showPage(pageName) {
