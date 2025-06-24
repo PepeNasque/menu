@@ -530,6 +530,23 @@
       }
     }
   </style>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-database-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAl2dpllTy_HfEv55ZfTUIZG2Xn0G0Uvng",
+    authDomain: "pepenasque.firebaseapp.com",
+    projectId: "pepenasque",
+    storageBucket: "pepenasque.firebasestorage.app",
+    messagingSenderId: "283152004863",
+    appId: "1:283152004863:web:10318eea325873c25efeca",
+    measurementId: "G-Z7TB905PTN",
+    databaseURL: "https://pepenasque-default-rtdb.firebaseio.com"
+  };
+  firebase.initializeApp(firebaseConfig);
+</script>
 </head>
 <body>
   <header class="navbar">
@@ -710,91 +727,41 @@
     // Set current year in footer
     document.getElementById('current-year').textContent = new Date().getFullYear();
 
-    // intialize counter
-    let downloadCount = localStorage.getItem('downloadCount') || 0;
-     document.getElementById('downloadCounter').textContent = `Скачано ${downloadCount} раз`;
-     document.getElementById('safeDownloadCounter').textContent = downloadCount;
-
-    // Function to handle page switching
-    function showPage(pageName) {
-      // Hide all pages
-      const pages = document.querySelectorAll('.page');
-      pages.forEach(page => {
-        page.classList.remove('active-page');
-      });
-      
-      // Show selected page
-      const activePage = document.getElementById(pageName + '-page');
-      if (activePage) {
-        activePage.classList.add('active-page');
-      }
-      
-      // Scroll to top
-      window.scrollTo(0, 0);
-      
-      // Update URL hash without scrolling
-      history.pushState(null, null, '#' + pageName);
-      
-      return false;
-    }
-
-    // Handle URL hash on load
-    window.addEventListener('load', () => {
-      const hash = window.location.hash.replace('#', '');
-      if (hash === 'safe') {
-        showPage('safe');
-      } else {
-        showPage('home');
-      }
-    });
-
-    // Scroll animation for navbar
-    window.addEventListener('scroll', () => {
-      const navbar = document.querySelector('.navbar');
-      if (window.scrollY > 10) {
-        navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.2)';
-        navbar.style.background = 'rgba(15, 17, 23, 0.8)';
-      } else {
-        navbar.style.boxShadow = 'none';
-        navbar.style.background = 'rgba(15, 17, 23, 0.5)';
-      }
-    });
-
-    // Setup download buttons to track downloads
-    function setupDownloadButtons() {
-      const downloadButtons = document.querySelectorAll('.download-button');
-      
-      downloadButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-          // Prevent default action (we'll handle it ourselves)
-          e.preventDefault();
-          
-          // Increase counter
-          downloadCount++;
-          localStorage.setItem('downloadCount', downloadCount);
-          
-          // Update counters on both pages
-          document.getElementById('downloadCounter').textContent = `Скачано ${downloadCount} раз`;
-          document.getElementById('safeDownloadCounter').textContent = downloadCount;
-          
-          // Get the file URL from the href attribute
-          const fileUrl = this.getAttribute('href');
-          
-          // Create a temporary link to trigger the download
-          const downloadLink = document.createElement('a');
-          downloadLink.href = fileUrl;
-          downloadLink.download = fileUrl.split('/').pop(); // Use the filename from URL
-          
-          // Trigger the download
-          document.body.appendChild(downloadLink);
-          downloadLink.click();
-          document.body.removeChild(downloadLink);
-        });
-      });
-    }
     
-    // Set up download buttons
-    setupDownloadButtons();
+// Firebase-based download counter
+let downloadCount = 0;
+
+function updateCounters() {
+  document.getElementById('downloadCounter').textContent = `Скачано ${downloadCount} раз`;
+  document.getElementById('safeDownloadCounter').textContent = downloadCount;
+}
+
+firebase.database().ref('downloadCount').once('value').then(snapshot => {
+  downloadCount = snapshot.val() || 0;
+  updateCounters();
+});
+
+function setupDownloadButtons() {
+  const downloadButtons = document.querySelectorAll('.download-button');
+  downloadButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      downloadCount++;
+      firebase.database().ref('downloadCount').set(downloadCount);
+      updateCounters();
+      const fileUrl = this.getAttribute('href');
+      const downloadLink = document.createElement('a');
+      downloadLink.href = fileUrl;
+      downloadLink.download = fileUrl.split('/').pop();
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    });
+  });
+}
+
+setupDownloadButtons();
+
 
     // Add animation for page load
     document.addEventListener('DOMContentLoaded', () => {
@@ -833,5 +800,18 @@
   </script>
   <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
   <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+
+  <script>
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active-page');
+      });
+      const target = document.getElementById(`${pageId}-page`);
+      if (target) {
+        target.classList.add('active-page');
+      }
+    }
+  </script>
 </body>
+
 </html>
