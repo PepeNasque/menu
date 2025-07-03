@@ -529,7 +529,48 @@
         text-align: center;
       }
     }
-  </style>
+  
+.input-style {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: #e2e8f0;
+  width: 100%;
+  max-width: 500px;
+  font-size: 14px;
+  outline: none;
+  backdrop-filter: blur(6px);
+  margin-bottom: 10px;
+  transition: border 0.2s ease;
+}
+.input-style::placeholder {
+  color: rgba(226, 232, 240, 0.4);
+}
+.input-style:focus {
+  border: 1px solid var(--primary);
+}
+
+
+.star {
+  font-size: 28px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.3);
+  transition: color 0.2s ease;
+}
+.star.hovered,
+.star.selected {
+  color: gold;
+}
+
+.comment-text {
+  color: #aaa;
+  margin-top: 8px;
+  word-break: break-word;
+  white-space: pre-wrap;
+  max-width: 100%;
+}
+</style>
 
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
@@ -556,12 +597,16 @@
       </a>
       <nav class="nav-links">
         <a href="#home" class="nav-link" onclick="showPage('home')">Home</a>
+        <a href="#rating" class="nav-link" onclick="showPage('rating')">Rating</a>
         <a href="#safe" class="nav-link" onclick="showPage('safe')">Is it safe?</a>
         <a href="#support" class="nav-link" onclick="showPage('support')">Support</a>
         <a href="https://t.me/whforcs2" target="_blank" class="button telegram-button">Telegram</a>
       </nav>
     </div>
   </header>
+
+
+
 
   <main>
     <!-- Home Page -->
@@ -728,6 +773,59 @@
       </div>
     </section>
 
+
+<section id="rating-page" class="page">
+  <div class="hero safe-hero">
+    <div class="background-blur"></div>
+    <div class="safe-content" style="text-align:center; animation: fade-up 0.8s ease forwards;">
+      <div id="globalRatingBar" style="
+  background: linear-gradient(90deg, #1a1f2c, #181c28);
+  color: #e2e8f0;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: center;
+  width: 100%;
+  display: none;
+  margin-bottom: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+">
+</div>
+<div id="totalRatingText" style="
+  margin-bottom: 12px;
+  font-size: 20px;
+  color: gold;
+  font-weight: 600;
+"></div>
+<h1>User Ratings</h1>
+
+      <form onsubmit="submitRating(event)" style="margin-bottom: 40px;">
+        <input class="input-style" id="nickname" type="text" placeholder="Nickname" required maxlength="20"
+               style="padding: 10px; border-radius: 8px; border: none; margin-bottom: 10px; width: 100%; max-width: 300px;"><br>
+        <div id="starRating" style="margin-bottom: 12px;">
+  <span class="star" data-value="1">&#9734;</span>
+  <span class="star" data-value="2">&#9734;</span>
+  <span class="star" data-value="3">&#9734;</span>
+  <span class="star" data-value="4">&#9734;</span>
+  <span class="star" data-value="5">&#9734;</span>
+</div>
+<input type="hidden" id="stars" required><br>
+        <textarea class="input-style" id="comment" placeholder="Your comment..." maxlength="300"
+                  style="padding: 10px; border-radius: 8px; width: 100%; max-width: 500px; height: 100px; margin-bottom: 10px;" required></textarea><br>
+        <button class="button button-outline" type="submit">Submit Rating</button>
+      </form>
+
+      
+
+
+<div id="averageRating" style="margin-bottom: 24px; font-size: 18px; color: #ccc;"></div>
+<div id="ratingsList"></div>
+    </div>
+  </div>
+</section>
+
 </main>
 
   <footer class="footer">
@@ -771,7 +869,7 @@ firebase.database().ref('downloadCount').once('value').then(snapshot => {
 });
 
 function setupDownloadButtons() {
-  const downloadButtons = document.querySelectorAll('.download-button');
+  const downloadButtons = document.querySelectorAll('.download-button[href$=".rar"]');
   downloadButtons.forEach(button => {
     button.addEventListener('click', function(e) {
       e.preventDefault();
@@ -841,6 +939,241 @@ setupDownloadButtons();
       }
     }
   </script>
+
+<script>
+  function submitRating(event) {
+    event.preventDefault();
+
+    const nickname = document.getElementById('nickname').value.trim();
+    const stars = parseInt(document.getElementById('stars').value);
+    const comment = document.getElementById('comment').value.trim();
+
+    if (!nickname || !stars || !comment) {
+      alert('Please fill out all fields');
+      return;
+    }
+
+    const ratingData = {
+      nickname: nickname,
+      stars: stars,
+      comment: comment,
+      timestamp: Date.now()
+    };
+
+    const db = firebase.database();
+    db.ref("ratings").push(ratingData)
+      .then(() => {
+        alert("Thank you for your feedback!");
+        document.getElementById('nickname').value = '';
+        document.getElementById('stars').value = '';
+        document.getElementById('comment').value = '';
+        loadRatings(); // Refresh the list
+      })
+      .catch(error => {
+        console.error("Error saving rating:", error);
+        alert("Error saving your rating. Try again.");
+      });
+  }
+
+  function loadRatings() {
+    const db = firebase.database();
+    db.ref("ratings").orderByChild("timestamp").limitToLast(100).once("value", snapshot => {
+      const container = document.getElementById('ratingsList');
+      container.innerHTML = '';
+
+      if (!snapshot.exists()) {
+        container.innerHTML = '<p style="color:gray;">No ratings yet.</p>';
+        return;
+      }
+
+      const ratings = Object.values(snapshot.val());
+      ratings.sort((a, b) => b.timestamp - a.timestamp); // Newest first
+
+      ratings.forEach(r => {
+        const div = document.createElement('div');
+        div.className = 'glass-card';
+        div.style.marginBottom = '16px';
+        div.innerHTML = `
+          <strong>${r.nickname}</strong> - ${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}
+          <p class="comment-text">${r.comment}</p>
+        `;
+        container.appendChild(div);
+      });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", loadRatings);
+</script>
+
+
+<script>
+  console.log("Firebase script loaded");
+
+  function submitRating(event) {
+    event.preventDefault();
+
+    const nickname = document.getElementById('nickname').value.trim();
+    const stars = parseInt(document.getElementById('stars').value);
+    const comment = document.getElementById('comment').value.trim();
+
+    console.log("Submitting rating:", { nickname, stars, comment });
+
+    if (!nickname || !stars || !comment) {
+      alert('Please fill out all fields');
+      return;
+    }
+
+    const ratingData = {
+      nickname: nickname,
+      stars: stars,
+      comment: comment,
+      timestamp: Date.now()
+    };
+
+    const db = firebase.database();
+    console.log("Pushing to database...");
+    db.ref("ratings").push(ratingData)
+      .then(() => {
+        console.log("Rating saved successfully.");
+        alert("Thank you for your feedback!");
+        document.getElementById('nickname').value = '';
+        document.getElementById('stars').value = '';
+        document.getElementById('comment').value = '';
+        loadRatings();
+      })
+      .catch(error => {
+        console.error("Error saving rating:", error);
+        alert("Error saving your rating. Try again.");
+      });
+  }
+
+  function loadRatings() {
+    const db = firebase.database();
+    console.log("Loading latest 100 ratings from DB...");
+    db.ref("ratings").orderByChild("timestamp").limitToLast(100).once("value", snapshot => {
+      const container = document.getElementById('ratingsList');
+      container.innerHTML = '';
+
+      if (!snapshot.exists()) {
+        container.innerHTML = '<p style="color:gray;">No ratings yet.</p>';
+        return;
+      }
+
+      const ratings = Object.values(snapshot.val());
+      ratings.sort((a, b) => b.timestamp - a.timestamp);
+
+      ratings.forEach(r => {
+        const div = document.createElement('div');
+        div.className = 'glass-card';
+        div.style.marginBottom = '16px';
+        div.innerHTML = `
+          <strong>${r.nickname}</strong> - ${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}
+          <p class="comment-text">${r.comment}</p>
+        `;
+        container.appendChild(div);
+      });
+    }, error => {
+      console.error("Error loading ratings:", error);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM ready, loading ratings..."); 
+    loadRatings();
+  });
+</script>
+
+
+<script>
+function updateTotalRatingAboveTitle() {
+  const db = firebase.database();
+  const output = document.getElementById("totalRatingText");
+
+  if (!output) return;
+
+  db.ref("ratings").on("value", snapshot => {
+    if (!snapshot.exists()) {
+      output.textContent = "⭐ No ratings yet";
+    } else {
+      const ratings = Object.values(snapshot.val());
+      const totalStars = ratings.reduce((sum, r) => sum + (r.stars || 0), 0);
+      const average = (totalStars / ratings.length).toFixed(1);
+      output.textContent = `⭐ ${average} / 5 (${ratings.length} votes)`;
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", updateTotalRatingAboveTitle);
+</script>
+
 </body>
 
 </html>
+<script>
+function listenToAverageRating() {
+  const db = firebase.database();
+  const bar = document.getElementById('globalRatingBar');
+  if (!bar) return;
+
+  let lastKnownText = "";
+
+  db.ref("ratings").on("value", snapshot => {
+    if (!bar) return;
+
+    if (!snapshot.exists()) {
+      lastKnownText = "⭐ No ratings yet.";
+    } else {
+      const ratings = Object.values(snapshot.val());
+      const total = ratings.reduce((sum, r) => sum + (r.stars || 0), 0);
+      const avg = (total / ratings.length).toFixed(1);
+      lastKnownText = `⭐ Average Rating: ${avg} (based on ${ratings.length} votes)`;
+    }
+
+    updateRatingBarVisibility();
+  });
+
+  function updateRatingBarVisibility() {
+    const ratingPage = document.getElementById('rating-page');
+    const isVisible = ratingPage && ratingPage.style.display !== 'none';
+    if (isVisible) {
+      bar.textContent = lastKnownText;
+      bar.style.display = 'block';
+    } else {
+      bar.style.display = 'none';
+    }
+  }
+
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      setTimeout(updateRatingBarVisibility, 150);
+    });
+  });
+
+  updateRatingBarVisibility();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  listenToAverageRating();
+});););
+  });
+}););
+  });
+}););););
+</script>
+<script>
+function initStarRating() {
+  const stars = document.querySelectorAll('#starRating .star');
+  const hiddenInput = document.getElementById('stars');
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      const value = parseInt(star.dataset.value);
+      hiddenInput.value = value;
+      stars.forEach(s => {
+        s.innerHTML = s.dataset.value <= value ? '&#9733;' : '&#9734;';
+        s.classList.toggle('selected', s.dataset.value <= value);
+      });
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded', initStarRating);
+</script>
